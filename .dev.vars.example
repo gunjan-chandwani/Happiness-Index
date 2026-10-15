@@ -1,0 +1,9 @@
+# Copy these into Cloudflare Workers > Settings > Variables and Secrets.
+# Secrets (encrypted):
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
+SESSION_SECRET=replace-with-a-long-random-secret
+ADMIN_PASSWORD=replace-with-a-strong-admin-password
+RESEND_API_KEY=re_xxxxxxxxx
+RESEND_FROM=MRU Well-being <verified-sender@example.com>
+# Optional variables:
+ACCESS_CODE=
