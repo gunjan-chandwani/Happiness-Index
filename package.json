@@ -1,17 +1,12 @@
 {
-  "name": "mru-student-wellbeing-cloudflare",
+  "name": "mru-happiness-wellbeing-netlify",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "check": "wrangler deploy --dry-run"
+    "build": "echo Static site ready"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1"
-  },
-  "devDependencies": {
-    "wrangler": "^4.40.0"
   }
 }
