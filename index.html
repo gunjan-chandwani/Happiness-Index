@@ -5,7 +5,37 @@
 <section id="profile" class="card hidden"><div class="eyebrow">STEP 1 OF 2</div><h2>Your academic journey</h2><p>Choose your school and the relevant programme details.</p><form id="pf"><label>Student email *</label><input id="email" type="email" required placeholder="student@university.edu.in"><label>School *</label><select id="school" required><option value="">Choose school</option><option>School of Engineering</option><option>School of Sciences</option><option>School of Education and Humanities</option><option>School of Law</option><option>School of Business</option></select><div id="fields"></div><div class="actions"><button type="button" class="secondary" onclick="show('home')">Back</button><button class="primary">Continue →</button></div></form></section>
 <section id="survey" class="card hidden"><div class="eyebrow">STEP 2 OF 2</div><h2 id="qhead">Your experience</h2><p>How much do you agree with each statement about your recent experience?</p><div id="qs"></div><div class="actions"><button class="secondary" id="prev">← Previous</button><button class="primary" id="next">Next →</button></div></section>
 <section id="done" class="card hidden"><div class="eyebrow">RESPONSE RECORDED</div><h1>Thank you for sharing.</h1><p>Your response has been saved. Student voices help us build a more supportive campus experience.</p><button class="primary" onclick="location.reload()">Return home</button></section>
-<section id="admin" class="card hidden"><div class="eyebrow">INSTITUTIONAL INSIGHTS</div><h2>Happiness Index Dashboard</h2><div id="login"><label>Admin password</label><input id="pw" type="password"><button class="primary" onclick="loadAdmin()">Sign in</button><p id="err"></p></div><div id="dash" class="hidden"><div class="stats"><div class="stat">Total responses<b id="total">0</b></div><div class="stat">Schools represented<b id="scount">0</b></div></div><h3>Responses by school</h3><div id="schools"></div><h3>Average dimension scores</h3><div id="dims"></div><h3>Submissions</h3><button class="secondary" onclick="exportCSV()">Export CSV</button><div style="overflow:auto"><table><thead><tr><th>Date</th><th>School</th><th>Programme</th><th>Year</th><th>Email</th></tr></thead><tbody id="rows"></tbody></table></div></div></section></main><footer>MANAV RACHNA • Building a better tomorrow, together.</footer>
+<section id="admin" class="card hidden">
+<div class="eyebrow">INSTITUTIONAL INSIGHTS</div><h2>Happiness Index Dashboard</h2>
+<div id="login"><label>Admin password</label><input id="pw" type="password" autocomplete="current-password"><button class="primary" onclick="loadAdmin()">Sign in</button><p id="err"></p></div>
+<div id="dash" class="hidden">
+<div class="stats">
+<div class="stat">Total responses<b id="total">0</b></div>
+<div class="stat">Schools represented<b id="scount">0</b></div>
+<div class="stat">Students in strength register<b id="totalStudents">Not configured</b></div>
+<div class="stat">Response rate<b id="responseRate">—</b></div>
+</div>
+<h3>Filter analysis</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+<div><label for="fSchool">School</label><select id="fSchool"><option value="">All schools</option></select></div>
+<div><label for="fDept">Department</label><select id="fDept"><option value="">All departments</option></select></div>
+<div><label for="fProgram">Programme</label><select id="fProgram"><option value="">All programmes</option></select></div>
+<div><label for="fSemester">Semester</label><select id="fSemester"><option value="">All semesters</option></select></div>
+</div>
+<h3>Responses by school</h3><div id="schools"></div>
+<h3>Average dimension scores</h3><div id="dims"></div>
+<h3>Student strength register</h3><p>Enter the number of students for each school, department, programme and semester combination to calculate response rates.</p>
+<form id="strengthForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end">
+<div><label for="stSchool">School *</label><select id="stSchool" required><option value="">Choose school</option><option>School of Engineering</option><option>School of Sciences</option><option>School of Education and Humanities</option><option>School of Law</option><option>School of Business</option></select></div>
+<div><label for="stDept">Department (optional)</label><input id="stDept" placeholder="e.g. CST"></div>
+<div><label for="stProgram">Programme (optional)</label><input id="stProgram" placeholder="e.g. B.Tech in CSE"></div>
+<div><label for="stSemester">Semester (optional)</label><select id="stSemester"><option value="">Not specified</option><option>Semester 1</option><option>Semester 2</option><option>Semester 3</option><option>Semester 4</option><option>Semester 5</option><option>Semester 6</option><option>Semester 7</option><option>Semester 8</option></select></div>
+<div><label for="stTotal">Total students *</label><input id="stTotal" type="number" min="0" step="1" required placeholder="e.g. 120"></div>
+<div><button class="primary" type="submit">Save student count</button><span id="stMsg" aria-live="polite"></span></div>
+</form>
+<h3>School / department / programme breakdown</h3><div style="overflow:auto"><table><thead><tr><th>School</th><th>Department</th><th>Programme</th><th>Semester</th><th>Students</th><th>Responses</th><th>Response rate</th></tr></thead><tbody id="breakdown"></tbody></table></div>
+<h3>Submissions</h3><button class="secondary" onclick="exportCSV()">Export CSV</button><div style="overflow:auto"><table><thead><tr><th>Date</th><th>School</th><th>Department</th><th>Programme</th><th>Semester</th><th>Email</th></tr></thead><tbody id="rows"></tbody></table></div>
+</div></section></main><footer>MANAV RACHNA • Building a better tomorrow, together.</footer>
 <script>
 const dims={"Emotional Well-being & Inner Balance":[1,2,3,4,5],"Academic Experience & Engagement":[6,7,8,9,10,11],"Presence, Focus & Digital Well-being":[12,13,14,15,16],"Relationships, Connection & Support":[17,18,19,20,21],"Purpose, Self-Connection & Life Experience":[22,23,24,25,26,27]},rev=new Set([3,9,14,24]),questions=["I have generally felt emotionally balanced recently.","I have been able to manage everyday stress.","I have felt hopeful about the days ahead.","I have had enough moments of calm or contentment.","I have felt able to recover after a difficult day.","I feel engaged with my learning.","My academic workload feels manageable.","I understand what is expected of me academically.","I have felt disconnected from my studies.","I can ask for academic help when I need it.","My learning feels meaningful to my future.","I can focus on tasks when I need to.","I get enough breaks from screens and notifications.","Digital distractions often interrupt my concentration.","I have a healthy balance between online and offline time.","I can be present without constantly checking my phone.","I feel that I belong in my campus community.","I have someone I can talk to when things are difficult.","People around me treat me with respect.","I feel comfortable asking for support at university.","I have had positive interactions with peers or faculty.","I have a sense of direction in my life right now.","I have opportunities to explore my interests and strengths.","I feel connected to what matters most to me.","I often feel that my daily activities have no purpose.","I feel able to make choices that fit my values.","I have things in my life that I look forward to."];
 let profile={},answers={},page=0,token="",dataRows=[];
